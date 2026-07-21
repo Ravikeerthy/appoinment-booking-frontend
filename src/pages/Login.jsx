@@ -3,6 +3,7 @@ import bgImage from "../assets/auth-bg.png";
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const initialValues = {
@@ -11,12 +12,9 @@ const Login = () => {
   };
 
   const validationSchema = Yup.object({
-    email: Yup.string()
-      .email("Invalid email")
-      .required("Email is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
 
-    password: Yup.string()
-      .required("Password is required"),
+    password: Yup.string().required("Password is required"),
   });
 
   const handleSubmit = (values) => {
@@ -29,9 +27,7 @@ const Login = () => {
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       <div className="w-full max-w-md bg-black/70 border border-white/15 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl">
-        <h1 className="text-3xl font-bold text-center mb-3">
-          Welcome Back
-        </h1>
+        <h1 className="text-3xl font-bold text-center mb-3">Welcome Back</h1>
 
         <p className="text-gray-400 text-center mb-8">
           Login to manage your appointments
@@ -89,6 +85,22 @@ const Login = () => {
             </button>
           </Form>
         </Formik>
+        <div className="flex items-center gap-4 my-6">
+          <div className="h-px flex-1 bg-white/15" />
+          <span className="text-gray-400 text-sm">OR</span>
+          <div className="h-px flex-1 bg-white/15" />
+        </div>
+
+        <div className="flex justify-center">
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              console.log(credentialResponse);
+            }}
+            onError={() => {
+              console.log("Google Login Failed");
+            }}
+          />
+        </div>
 
         <p className="text-gray-400 text-center mt-6">
           Don&apos;t have an account?{" "}
